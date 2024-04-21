@@ -1,0 +1,65 @@
+[
+  {
+    "pid": 1,
+    "name": "[連營底墊] DOD ONE POLE TENT (M) 五人金仔露營帳篷 T5-47-BK / T5-47-TN 連營底墊",
+    "image_url": "https://funshopoutdoor.com.hk/cdn/shop/files/T5-47-TN15_585633ff-6787-43c7-b8c7-f3e6368ebe1a.png?v=1711077928&width=1214",
+    "price": 1176.00,
+    "has_stock": true
+  },
+  {
+    "pid": 2,
+    "name": "[連營底墊] Nemo Mayfly Osmo Lightweight Backpacking Tent 3-Person 三人輕量露營帳篷 連營底墊",
+    "image_url": "https://funshopoutdoor.com.hk/cdn/shop/files/NemoMayflyOsmo.png?v=1709881945&width=900",
+    "price": 3184.00,
+    "has_stock": true
+  },
+  {
+    "pid": 3,
+    "name": "Snow Peak 65週年 基地露營帳篷 Land Base 6 Pro In Ivory TP-656-IV",
+    "image_url": "https://funshopoutdoor.com.hk/cdn/shop/files/TP-656-IV3.jpg?v=1709198531&width=900",
+    "price": 10320.00,
+    "has_stock": true
+  },
+  {
+    "pid": 4,
+    "name": "Snow Peak Land Nest Dome Medium Inner Solo Tent 1人內帳 SDE-260IR",
+    "image_url": "https://funshopoutdoor.com.hk/cdn/shop/files/SDE-260IR1.jpg?v=1698895042&width=900",
+    "price": 1799.00,
+    "has_stock": true
+  },
+  {
+    "pid": 5,
+    "name": "Snow Peak Land Nest Small Tent & Tarp Set 2人露營帳篷天幕組 SET-259",
+    "image_url": "https://funshopoutdoor.com.hk/cdn/shop/files/638254424231830000.jpg?v=1698891037&width=900",
+    "price": 5129.00,
+    "has_stock": true
+  },
+  {
+    "pid": 6,
+    "name": "Nemo Tani Osmo 2P tent 超輕量2人露營帳篷",
+    "image_url": "https://funshopoutdoor.com.hk/cdn/shop/files/8116660341681.jpg?v=1691463601&width=640",
+    "price": 3443.00,
+    "has_stock": true
+  },
+  {
+    "pid": 7,
+    "name": "DOD 4 X 4 Base TT5-821-BR 客廳露營帳篷 (3-4人帳篷)",
+    "image_url": "https://funshopoutdoor.com.hk/cdn/shop/files/DOD4X4BaseTT5-821-BR_3-4_08.png?v=1706675707&width=640",
+    "price": 2988.00,
+    "has_stock": true
+  },
+  {
+    "pid": 8,
+    "name": "Snow Peak Tarp Extension Tent 4 Ivory 雪峰祭2022春季限定版天延申露營帳篷 FES-432 (3-4人帳篷)",
+    "image_url": "https://funshopoutdoor.com.hk/cdn/shop/products/4960589021154-1.webp?v=1678102748&width=900",
+    "price": 5760.00,
+    "has_stock": true
+  },
+  {
+    "pid": 9,
+    "name": "Snow Peak Entry Pack TT 露營帳篷天幕組 SET-250RH",
+    "image_url": "https://funshopoutdoor.com.hk/cdn/shop/files/SnowPeakEntryPackTT_SET-250RH1.jpg?v=1702954811&width=640",
+    "price": 3499.00,
+    "has_stock": true
+  }
+]
