@@ -1,11 +1,10 @@
 import NavList from "../../component/NavList";
 import ProductDetailComponent from "./component/ProductDetailComponent.tsx";
-import {Container} from "@mui/material";
 import {useEffect, useState} from "react";
 import {ProductDetailDto} from "../../../data/product/ProductDetailDto.ts";
 import {useNavigate, useParams} from "react-router-dom";
 import * as ProductApi from "../../../api/ProductApi.ts";
-import LoadingContainer from "../ProductListingPage/component/LoadingContainer.tsx";
+import ProductDetailSkeleton from "./component/ProductDetailSkeleton.tsx";
 
 type Params = {
     productId: string;
@@ -14,12 +13,14 @@ type Params = {
 export default function ProductDetail() {
     const [dto, setDto] = useState<ProductDetailDto | undefined>(undefined);
     const {productId} = useParams<Params>();
+
     const navigate = useNavigate();
 
-    const fetchProducts = async ( productId: string) => {
+    const fetchProducts = async (productId: string) => {
         try {
             const response = await ProductApi.getProductById(productId)
             setDto(response);
+
         } catch (error) {
             navigate("/error");
         }
@@ -34,12 +35,13 @@ export default function ProductDetail() {
         }
     }, [])
 
+
     return (
         <>
-            <NavList/>
-            <Container>
-                {dto ? <ProductDetailComponent dto={dto}/> : <LoadingContainer/>}
-            </Container>
+            <>
+                <NavList/>
+                {dto ? <ProductDetailComponent dto={dto}/> : <ProductDetailSkeleton/>}
+            </>
         </>
     )
 }

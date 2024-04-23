@@ -9,20 +9,26 @@ import Carousels from "./component/Carousels.tsx";
 // import LoadingContainer from "./component/LoadingContainer.tsx";
 // import Carousels from "./component/Carousels.tsx";
 
+
 export default function ProductListingPage() {
     const [productListDto, setProductListDto] = useState<GetAllProductDto[] | undefined>(undefined);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(true);
+    const [search, setSearch] = useState<string>("");
+
+
 
 
     const fetchAllProducts = async () => {
         try {
+            setIsLoading(true);
             setProductListDto(undefined);
             const ProductListingPage = await ProductApi.getAllProducts();
             setProductListDto(ProductListingPage);
             setIsLoading(false);
         } catch (error) {
             navigate("/error");
+            setIsLoading(false);
         }
     }
     useEffect(() => {
@@ -31,11 +37,14 @@ export default function ProductListingPage() {
 
     return (
         <>
-            <NavList/>
+            <NavList search={search} setSearch={setSearch} />
             <Container>
-                <Carousels/>
                 {productListDto && (
-                    <ProductList data={productListDto} isLoading={isLoading} />)}
+                    <>
+                        <Carousels />
+                        <ProductList data={productListDto} isLoading={isLoading}  search={search}/>
+                    </>
+                )}
             </Container>
         </>
     )

@@ -1,11 +1,13 @@
-import {Button, LinearProgress, TableCell, TableRow} from "@mui/material";
+import {TableCell, TableRow} from "@mui/material";
 import QuantitySelector from "../../../component/QuantitySelector.tsx";
 import {GetUserCartItemDto} from "../../../../data/cartItem/GetUserCartItemDto.ts";
 import * as CartItemApi from "../../../../api/CartItemApi.ts"
 import {Dispatch, SetStateAction, useState} from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import {Link} from "react-router-dom";
 
 type Props = {
     dto: GetUserCartItemDto,
@@ -60,28 +62,92 @@ export default function ShoppingCartTableItem({dto, setDtoList, dtoList}: Props)
 
 
     return (
-        <TableRow key={dto.pid}>
-            <TableCell><img src={dto.image_url} alt={dto.name} height={150}/></TableCell>
-            <TableCell>{dto.name}</TableCell>
-            <TableCell>${dto.price.toLocaleString()}</TableCell>
-            <TableCell>
+        <TableRow key={dto.pid} sx={{borderTop: '#e1e3e4'}}>
+            <TableCell sx={{pl: '30px', pt: '26px', pb: '26px', p: '15px 30px'}}>
+                <Box component='div' sx={{alignItems: 'center', display: 'flex'}}>
+                    <Box component='div' sx={{width: '90px', minWidth: '90px', mr: '20px'}}>
+                        <Box component='div'
+                             sx={{pb: '100.0%', position: 'relative', marginLeft: 'auto', marginRight: 'auto'}}>
+                            <img
+                                src={dto.image_url}
+                                alt={dto.name}
+                                style={{
+                                    position: 'absolute',
+                                    height: '100%',
+                                    width: '100%',
+                                    maxWidth: '100%',
+                                    maxHeight: '100%',
+                                    top: 0,
+                                    left: 0,
+                                    borderStyle: 'none',
+                                    verticalAlign: 'top'
+                                }}
+                            />
+                        </Box>
+                    </Box>
+                    <Box component='div' sx={{
+                        flexGrow: 1,
+                        alignItems: 'center',
+                        display: 'flex',
+                        alignContent: 'stretch',
+                        flexWrap: 'wrap'
+                    }}>
+                        <Box component='div' sx={{fontSize: '13px'}}>
+                            <Typography sx={{
+                                display: 'block',
+                                mb: '4px',
+                                lineHeight: '1.5',
+                                color: '#800019',
+                                fontWeight: '500'
+                            }}>{dto.name}</Typography>
+                        </Box>
+                        <Divider sx={{my: 3}}/>
+                        <Box component='div' sx={{fontSize: '13px'}}>
+                            <Typography component='span' sx={{
+                                display: 'inline-block',
+                                fontWeight: '500',
+                                color: '#800019'
+                            }}>HK${dto.price.toLocaleString()}</Typography>
+                        </Box>
+                    </Box>
+                </Box>
+            </TableCell>
+            <TableCell sx={{pl: '30px', pt: '26px', pb: '26px', p: '15px 30px'}}>
+                 <QuantitySelector quantity={dto.cart_quantity} handleMinus={handleMinusOne} handlePlus={handlePlusOne} isLoading={isQuantityPatching}/>
                 {
-                    isQuantityPatching
-                        ? <LinearProgress/>
-                        : <QuantitySelector quantity={dto.cart_quantity} handleMinus={handleMinusOne}
-                                            handlePlus={handlePlusOne}/>
+                    isDeleting ? <Box sx={{textAlign: 'center'}}> <CircularProgress size="1rem"/> </Box> :
+                        <Link
+                            to="#"
+                            onClick={handleDelete}
+                            style={{textDecoration: 'none', color: 'inherit'}}
+                        >
+                            <Box
+                                sx={{
+                                    display: 'block',
+                                    width: 'max-content',
+                                    margin: '10px auto 0',
+                                    fontSize: '12px',
+                                    lineHeight: '1',
+                                    transition: 'color .2s ease-in-out',
+                                    backgroundColor: 'transparent',
+                                }}
+                            >
+                                Remove
+                            </Box>
+                        </Link>
                 }
             </TableCell>
-            <TableCell>${(dto.cart_quantity * dto.price).toLocaleString()}</TableCell>
-            <TableCell>
-                {
-                    isDeleting
-                        ? <CircularProgress size="1rem"/>
-                        : <Button onClick={handleDelete}>
-                            <FontAwesomeIcon icon={faTrash} size="lg"/>
-                        </Button>
-                }
-            </TableCell>
+            <TableCell sx={{
+                paddingRight: '30px',
+                textAlign: 'right',
+                paddingTop: '26px',
+                paddingBottom: '26px',
+                padding: '15px 30px'
+            }}><Typography component='span' sx={{
+                display: 'inline-block',
+                fontWeight: '400',
+                color: '#800019'
+            }}>HK${(dto.cart_quantity * dto.price).toLocaleString()}</Typography></TableCell>
         </TableRow>
     )
 }

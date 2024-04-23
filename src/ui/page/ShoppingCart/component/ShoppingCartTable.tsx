@@ -1,10 +1,5 @@
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import {GetUserCartItemDto} from "../../../../data/cartItem/GetUserCartItemDto.ts";
-// import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-// import {faTrash} from "@fortawesome/free-solid-svg-icons";
-// import * as CartItemApi from "../../../../api/CartItemApi.ts";
-// import {useNavigate} from "react-router-dom";
-// import {useState} from "react";
 import ShoppingCartTableItem from "./ShoppingCartTableItem.tsx";
 import {Dispatch, SetStateAction} from "react";
 
@@ -17,16 +12,13 @@ type Props = {
 
 export default function ShoppingCartTable({dto,setDtoList,dtoList }: Props) {
     return (
-        <TableContainer component={Paper}>
+        <TableContainer>
             <Table sx={{minWidth: 650}} aria-label="simple table">
-                <TableHead>
+                <TableHead sx={{width:'100%',textAlign:'left', fontSize:'13px'}}>
                     <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Unit Price</TableCell>
-                        <TableCell></TableCell>
-                        <TableCell>Sub-total</TableCell>
-                        <TableCell></TableCell>
+                        <TableCell sx={{pl: '30px',p:'15px 30px', fontWeight:'400'}}>Product</TableCell>
+                        <TableCell sx={{p:'15px 30px', fontWeight:'400',textAlign:'center'}}>Quantity</TableCell>
+                        <TableCell sx={{pr:'30px',p:'15px 30px', fontWeight:'400',textAlign:'right'}}>Total</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

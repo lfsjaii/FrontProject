@@ -6,17 +6,18 @@ import Product from "./Product.tsx";
 type Props = {
     data: GetAllProductDto[];
     isLoading: boolean;
+    search: string;
 }
 
-export default function ProductList({data, isLoading}: Props) {
+export default function ProductList({data,isLoading, search}: Props) {
+    const filteredData = data.filter(item => item.name.toLowerCase().includes(search.toLowerCase()));
     return (
         <Box sx={{flexGrow: 1, m: 4}}>
             <Grid container spacing={{xs: 2, md: 3}} columns={{xs: 1, sm: 4, md: 12}}>
                 {
-                    data && (
-                        data.map((index) => (
-                            <Product data={index} key={index.pid} isLoading={isLoading}/>
-                        )))
+                    filteredData.map((index) => (
+                        <Product data={index} key={index.pid} isLoading={isLoading} />
+                    ))
                 }
             </Grid>
         </Box>

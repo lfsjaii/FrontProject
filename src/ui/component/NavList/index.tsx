@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import {useTheme} from "@mui/material/styles";
-import {alpha, Button, Container, InputBase, Slide, Stack, styled, useScrollTrigger} from "@mui/material";
+import {alpha, Button, Container, InputBase, Stack, styled} from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import Badge from "@mui/material/Badge";
@@ -20,18 +20,18 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import {useContext} from "react";
+import {Dispatch, SetStateAction, useContext, useState} from "react";
 import {UserData} from "../../../data/user/UserData.ts";
 import CircularProgress from "@mui/material/CircularProgress";
 import * as FirebaseAuthService from "../../../authService/FirebaseAuthService.ts";
 import {LoginUserContext} from "../../../context/LoginUserContext.ts";
 import PlusIcon from "../../../img/outdoor-logo-design-including-mountains--trees--ca_preview_rev_1.png";
 import LogoLight from "../../../img/logo-light.svg"
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
-
-interface Props {
-    children: React.ReactElement;
-}
 
 const Search = styled('div')(({theme}) => ({
     position: 'relative',
@@ -87,11 +87,27 @@ const DrawerHeader = styled('div')(({theme}) => ({
     justifyContent: 'flex-end',
 }));
 
+type Prop = {
+    search?: string;
+    setSearch?: Dispatch<SetStateAction<string>>
+}
 
-export default function NavList() {
+
+export default function NavList({search, setSearch}: Prop) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const loginUser = useContext<UserData | null | undefined>(LoginUserContext);
+    const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
 
     // const [drawOpen,setDrawOpen] = useState<boolean>(false);
 
@@ -99,21 +115,43 @@ export default function NavList() {
     const navigate = useNavigate();
 
     const renderLoginUser = () => {
+
         if (loginUser) {
+            const firstLetter = loginUser.email ? loginUser.email.charAt(0).toUpperCase() : '';
             return (
                 <Stack direction="row">
                     <Box display="flex" alignItems="center" mr={2} ml={2}>
-                        <Typography>
-                            {
-                                loginUser.email
-                            }
-                        </Typography>
+                        <Box sx={{flexGrow: 0}}>
+                            <Tooltip title="Open settings">
+                                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                                    <Avatar>{firstLetter}</Avatar>
+                                </IconButton>
+                            </Tooltip>
+                            <Menu
+                                sx={{mt: '45px'}}
+                                id="menu-appbar"
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorElUser)}
+                                onClose={handleCloseUserMenu}
+                            >
+                                <MenuItem onClick={() => {
+                                    FirebaseAuthService.handleSignOut().then();
+                                    handleCloseUserMenu();
+                                }}>
+                                    <Typography textAlign="center">Logout</Typography>
+                                </MenuItem>
+                            </Menu>
+                        </Box>
                     </Box>
-                    <Button color="inherit" onClick={() => {
-                        FirebaseAuthService.handleSignOut().then()
-                    }}>
-                        Logout
-                    </Button>
                 </Stack>
             )
         } else if (loginUser === null) {
@@ -150,85 +188,84 @@ export default function NavList() {
     };
 
 
-    function HideOnScroll(props: Props) {
-        const {children} = props;
-        const trigger = useScrollTrigger();
-
-        return (
-            <Slide appear={false} direction="down" in={!trigger}>
-                {children}
-            </Slide>
-        );
-    }
-
     return (
         <React.Fragment>
-            <HideOnScroll>
-                <AppBar variant="elevation" sx={{backgroundColor: "#122315"}}>
-                    <Container maxWidth="xl">
-                        <Toolbar disableGutters>
-                            <Button sx={{display: {xs: 'none', md: 'flex'}, mr: 1}}><Link to="/" style={{textDecoration: 'none', color: 'inherit'}}><img src={PlusIcon} alt="Plus Icon" width={60} height={60}/></Link></Button>
-                            <Typography
-                                variant="h6"
-                                noWrap
-                                sx={{
-                                    mr: 2,
-                                    display: {xs: 'none', md: 'flex'},
-                                    fontFamily: 'monospace',
-                                    fontWeight: 700,
-                                    letterSpacing: '.3rem',
-                                    color: 'inherit',
-                                    textDecoration: 'none',
-                                }}
+            <AppBar variant="elevation" sx={{backgroundColor: "#122315"}}>
+                <Container maxWidth="xl">
+                    <Toolbar disableGutters>
+                        <Button sx={{display: {xs: 'none', md: 'flex'}, mr: 1}}><Link to="/" style={{
+                            textDecoration: 'none',
+                            color: 'inherit'
+                        }}><img src={PlusIcon} alt="Plus Icon" width={60} height={60}/></Link></Button>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            sx={{
+                                mr: 2,
+                                display: {xs: 'none', md: 'flex'},
+                                fontFamily: 'monospace',
+                                fontWeight: 700,
+                                letterSpacing: '.3rem',
+                                color: 'inherit',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            <img src={LogoLight} alt="Logo light" width={60} height={60}/>
+                        </Typography>
+                        <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpen}
+                                edge="start"
+                                sx={{mr: 2, ...(open && {display: 'none'})}}
                             >
-                                <img src={LogoLight} alt="Logo light" width={60} height={60} />
-                            </Typography>
-                            <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
-                                <IconButton
-                                    color="inherit"
-                                    aria-label="open drawer"
-                                    onClick={handleDrawerOpen}
-                                    edge="start"
-                                    sx={{mr: 2, ...(open && {display: 'none'})}}
-                                >
-                                    <MenuIcon/>
-                                </IconButton>
-                            </Box>
-                            <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
-                                {/*<Link to="/" style={{textDecoration: 'none'}}>*/}
-                                {/*    <Button sx={{my: 2, color: 'white', display: 'block'}}>*/}
-                                {/*        Product Listing*/}
-                                {/*    </Button>*/}
-                                {/*</Link>*/}
-                                {/*<Link to="/product/1/99" style={{textDecoration: 'none'}}>*/}
-                                {/*    <Button sx={{my: 2, color: 'white', display: 'block'}}>*/}
-                                {/*        Product Detail Page*/}
-                                {/*    </Button>*/}
-                                {/*</Link>*/}
-                            </Box>
-                            {/*<Button sx={{display: {xs: 'none', md: 'none', sm: 'block'}, mr: 1}}><Link to="/" style={{textDecoration: 'none', color: 'inherit'}}><img src={PlusIcon} alt="Plus Icon" width={100} height={100}/></Link></Button>*/}
-                            <Search>
-                                <SearchIconWrapper>
-                                    <SearchIcon/>
-                                </SearchIconWrapper>
-                                <StyledInputBase
-                                    placeholder="Search…"
-                                    inputProps={{'aria-label': 'search'}}
-                                />
-                            </Search>
-                            {renderLoginUser()}
-                            <IconButton size="large" color="inherit" onClick={() => {
-                                navigate("/shoppingcart")
-                                // setDrawOpen(true);
-                            }}>
-                                <Badge badgeContent={3} color="error">
-                                    <ShoppingCartOutlinedIcon/>
-                                </Badge>
+                                <MenuIcon/>
                             </IconButton>
-                        </Toolbar>
-                    </Container>
-                </AppBar>
-            </HideOnScroll>
+                        </Box>
+                        <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
+                            {/*<Link to="/" style={{textDecoration: 'none'}}>*/}
+                            {/*    <Button sx={{my: 2, color: 'white', display: 'block'}}>*/}
+                            {/*        Product Listing*/}
+                            {/*    </Button>*/}
+                            {/*</Link>*/}
+                            {/*<Link to="/product/1/99" style={{textDecoration: 'none'}}>*/}
+                            {/*    <Button sx={{my: 2, color: 'white', display: 'block'}}>*/}
+                            {/*        Product Detail Page*/}
+                            {/*    </Button>*/}
+                            {/*</Link>*/}
+                        </Box>
+                        {/*<Button sx={{display: {xs: 'none', md: 'none', sm: 'block'}, mr: 1}}><Link to="/" style={{textDecoration: 'none', color: 'inherit'}}><img src={PlusIcon} alt="Plus Icon" width={100} height={100}/></Link></Button>*/}
+                        <Search>
+                            <SearchIconWrapper>
+                                <SearchIcon/>
+                            </SearchIconWrapper>
+                            <StyledInputBase
+                                placeholder="Search…"
+                                inputProps={{'aria-label': 'search'}}
+                                value={search}
+                                onChange={(event) => {
+                                    if (setSearch) {
+                                        setSearch(event.target.value)
+                                    }
+                                }}
+                            />
+                        </Search>
+                        {renderLoginUser()}
+                        <IconButton size="large" color="inherit" onClick={() => {
+                            if (loginUser) {
+                                navigate("/shoppingcart");
+                            } else {
+                                navigate("/login");
+                            }
+                        }}>
+                            <Badge badgeContent={3} color="error">
+                                <ShoppingCartOutlinedIcon/>
+                            </Badge>
+                        </IconButton>
+                    </Toolbar>
+                </Container>
+            </AppBar>
             {/*<ShoppingCartDrawer drawerOpen={drawOpen} setDrawerOpen={setDrawOpen}/>*/}
             <Toolbar/>
             <Drawer
@@ -245,7 +282,10 @@ export default function NavList() {
                 open={open}
             >
                 <DrawerHeader>
-                    <Button sx={{display: {md: 'flex'}, mr: 3}}><Link to="/" style={{textDecoration: 'none', color: 'inherit'}}><img src={PlusIcon} alt="Plus Icon" width={100} height={100}/></Link></Button>
+                    <Button sx={{display: {md: 'flex'}, mr: 3}}><Link to="/" style={{
+                        textDecoration: 'none',
+                        color: 'inherit'
+                    }}><img src={PlusIcon} alt="Plus Icon" width={100} height={100}/></Link></Button>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                     </IconButton>
