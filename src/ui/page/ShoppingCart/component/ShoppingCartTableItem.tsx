@@ -37,7 +37,7 @@ export default function ShoppingCartTableItem({dto, setDtoList, dtoList}: Props)
     }
 
     const handleMinusOne = async () => {
-        if (dto.cart_quantity + 1 < dto.stock) {
+        if (dto.cart_quantity - 1 > 0) {
             setIsQuantityPatching(true);
             const responseDto = await CartItemApi.patchCartItemQuantity(dto.pid, dto.cart_quantity - 1);
             const updateDtoList = dtoList.map((item) => {
@@ -48,6 +48,8 @@ export default function ShoppingCartTableItem({dto, setDtoList, dtoList}: Props)
             })
             setDtoList(updateDtoList);
             setIsQuantityPatching(false);
+        } else {
+            await handleDelete();
         }
     }
 

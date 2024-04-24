@@ -1,6 +1,7 @@
-import {Paper, IconButton} from '@mui/material';
+import {Paper, IconButton, useMediaQuery} from '@mui/material';
 import {ArrowBack, ArrowForward} from '@mui/icons-material';
 import {useEffect, useState} from "react";
+import {useTheme} from "@mui/material/styles";
 
 const images = [
     'https://funshopoutdoor.com.hk/cdn/shop/files/nemo_s24_tent_1200_x_480_px.png?v=1710818109&width=1200',
@@ -10,6 +11,8 @@ const images = [
 
 export default function Carousels() {
     const [index, setIndex] = useState(0);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -28,7 +31,11 @@ export default function Carousels() {
     };
 
     return (
-        <Paper elevation={3} sx={{position: 'relative'}}>
+        <Paper elevation={3} sx={{
+            position: 'relative',
+            width: isMobile ? '90vw' : 'auto',
+            margin: '0 auto',
+        }}>
             <IconButton onClick={handlePrev} sx={{
                 position: 'absolute',
                 left: 0,
@@ -36,7 +43,13 @@ export default function Carousels() {
                 transform: 'translateY(-50%)',
                 zIndex: 1
             }}><ArrowBack/></IconButton>
-            <img src={images[index]} alt={`Image ${index + 1}`} style={{width: '100%', height: 'auto', display: 'block',maxWidth: '100vw', maxHeight: '100vh'}}/>
+            <img src={images[index]} alt={`Image ${index + 1}`} style={{
+                width: '100%',
+                height: 'auto',
+                display: 'block',
+                maxWidth: '100%',
+                maxHeight: '100vh',
+            }}/>
             <IconButton onClick={handleNext} sx={{
                 position: 'absolute',
                 right: 0,
@@ -45,6 +58,5 @@ export default function Carousels() {
                 zIndex: 1
             }}><ArrowForward/></IconButton>
         </Paper>
-
     )
 }

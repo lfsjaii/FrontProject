@@ -1,8 +1,9 @@
 import {GetAllProductDto} from "../data/product/GetAllProductDto.ts";
 import axios from "axios";
 import {ProductDetailDto} from "../data/product/ProductDetailDto.ts";
+import getEnvConfig from "../config/EnvConfig.ts";
 
-const baseUrl = "http://localhost:8080";
+const baseUrl = getEnvConfig().baseUrl;
 
 export async function getAllProducts() {
     try {

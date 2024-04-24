@@ -13,7 +13,6 @@ import Carousels from "./component/Carousels.tsx";
 export default function ProductListingPage() {
     const [productListDto, setProductListDto] = useState<GetAllProductDto[] | undefined>(undefined);
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true);
     const [search, setSearch] = useState<string>("");
 
 
@@ -21,31 +20,27 @@ export default function ProductListingPage() {
 
     const fetchAllProducts = async () => {
         try {
-            setIsLoading(true);
             setProductListDto(undefined);
             const ProductListingPage = await ProductApi.getAllProducts();
             setProductListDto(ProductListingPage);
-            setIsLoading(false);
         } catch (error) {
             navigate("/error");
-            setIsLoading(false);
         }
     }
     useEffect(() => {
         fetchAllProducts();
+        document.title = "OIHub"
     }, [])
 
     return (
         <>
             <NavList search={search} setSearch={setSearch} />
-            <Container>
                 {productListDto && (
-                    <>
+                    <Container>
                         <Carousels />
-                        <ProductList data={productListDto} isLoading={isLoading}  search={search}/>
-                    </>
+                        <ProductList data={productListDto}  search={search}/>
+                    </Container>
                 )}
-            </Container>
         </>
     )
 }

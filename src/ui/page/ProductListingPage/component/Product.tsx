@@ -3,24 +3,22 @@ import {useNavigate} from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
 import {GetAllProductDto} from "../../../../data/product/GetAllProductDto.ts";
-import ProductSkeleton from "./ProductSkeleton.tsx";
 // import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 // import {faCartShopping} from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
     data: GetAllProductDto;
-    isLoading: boolean;
 }
 
 
-export default function Product({data, isLoading}: Props) {
+export default function Product({data}: Props) {
     const navigate = useNavigate();
 
 
     return (
-        <Grid sm={4} md={3} key={data.pid} justifyContent="center" alignItems="center">
-            {isLoading ? ( <ProductSkeleton/> ) : (
-            <Card sx={{maxWidth: 420}}>
+        <Grid xs={12} sm={6} md={3}  key={data.pid}>
+            {/*{data ? ( <ProductSkeleton/> ) : (*/}
+            <Card sx={{maxWidth: 420 }} >
                 <CardActionArea onClick={() => {
                     navigate(`/product/${data.pid}`)
                 }}>
@@ -68,7 +66,9 @@ export default function Product({data, isLoading}: Props) {
                     </CardContent>
                 </CardActionArea>
             </Card>
-            )}
+            {/*)}*/}
+
+
             {/*<CardActions>*/}
             {/*    <Button*/}
             {/*        className="btn btn--primary w-full"*/}

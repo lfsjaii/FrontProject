@@ -1,9 +1,10 @@
 import * as FirebaseAuthService from "../authService/FirebaseAuthService.ts"
 import axios from "axios";
 import {GetUserCartItemDto} from "../data/cartItem/GetUserCartItemDto.ts";
+import getEnvConfig from "../config/EnvConfig.ts";
 
 
-const baseUrl = 'http://localhost:8080';
+const baseUrl = getEnvConfig().baseUrl;
 
 const getAuthConfig = async () => {
     const accessToken = await FirebaseAuthService.getAccessToken();
@@ -36,7 +37,6 @@ export async function putCartItem(pid: number, quantity: number) {
 
 export async function getUserCartItem():Promise<GetUserCartItemDto[]> {
     try {
-
          const response = await axios.get<GetUserCartItemDto[]>(
             `${baseUrl}/cart`,
             await getAuthConfig()

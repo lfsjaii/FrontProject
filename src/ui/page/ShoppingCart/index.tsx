@@ -4,7 +4,7 @@ import {GetUserCartItemDto} from "../../../data/cartItem/GetUserCartItemDto.ts";
 import {useNavigate} from "react-router-dom";
 import * as CartItemApi from "../../../api/CartItemApi.ts"
 import ShoppingCartTable from "./component/ShoppingCartTable.tsx";
-import {Button, Container, SvgIcon} from "@mui/material";
+import {Backdrop, Button, Container, SvgIcon} from "@mui/material";
 import LoadingContainer from "../ProductListingPage/component/LoadingContainer.tsx";
 import {UserData} from "../../../data/user/UserData.ts";
 import {LoginUserContext} from "../../../context/LoginUserContext.ts";
@@ -14,12 +14,15 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
 import Divider from "@mui/material/Divider";
 import {Amex,Unionpay,Visa,Mastercard} from "react-payment-logos/dist/flat";
+import CircularProgress from "@mui/material/CircularProgress";
+import * as TransactionApi from "../../../api/TransactionApi.ts";
 
 
 export default function ShoppingCart() {
     const [dto, setDto] = useState<GetUserCartItemDto[] | undefined>(undefined);
     const navigate = useNavigate();
     const loginUser = useContext<UserData | undefined | null>(LoginUserContext)
+    const [isBackdropOpen, setIsBackdropOpen] = useState<boolean>(false);
 
     const fetchGetUserCartItems = async () => {
         try {
@@ -45,6 +48,12 @@ export default function ShoppingCart() {
             total += dto.price * dto.cart_quantity;
         });
         return total;
+    }
+
+    const handlePay = async () => {
+        setIsBackdropOpen(true);
+        const responseData = await TransactionApi.prepareTransaction();
+        navigate(`/checkout/${responseData.tid}`);
     }
 
     const renderSubmitBox = () => {
@@ -73,7 +82,7 @@ export default function ShoppingCart() {
                                 sx={{fontSize: '12px', mb: '4px', fontWeight: '500', color: '#800019', mt: '-.435em'}}>Shipping
                         calculated at checkout</Typography>
                 </Box>
-                <Button variant="contained" color="success" sx={{
+                <Button variant="contained" color="success" onClick={handlePay} sx={{
                     width: '100%',
                     height: '50px',
                     backgroundColor: '#800019',
@@ -169,6 +178,12 @@ export default function ShoppingCart() {
                         : <LoadingContainer/>
                 }
             </Container>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isBackdropOpen}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </>
     )
 }

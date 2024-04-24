@@ -19,6 +19,7 @@ export default function ProductDetail() {
     const fetchProducts = async (productId: string) => {
         try {
             const response = await ProductApi.getProductById(productId)
+            document.title = `OIHub - ${response.name}`;
             setDto(response);
 
         } catch (error) {
