@@ -12,7 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {ChangeEvent, FormEvent, useContext, useEffect, useState} from "react";
 import * as FirebaseAuthService from "../../../authService/FirebaseAuthService.ts"
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Alert from '@mui/material/Alert';
 import {UserData} from "../../../data/user/UserData.ts";
 import {LoginUserContext} from "../../../context/LoginUserContext.ts";
@@ -21,9 +21,7 @@ import {GoogleLoginButton} from "react-social-login-buttons";
 import Grid from '@mui/material/Grid';
 import CssBaseline from '@mui/material/CssBaseline';
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import PersonIcon from '@mui/icons-material/Person';
 
 
 export default function LoginPage() {
@@ -95,26 +93,41 @@ export default function LoginPage() {
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                     <Box
                         sx={{
-                            my: 8,
+                            my: 27,
                             mx: 4,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
                         }}
                     >
-                        <Avatar sx={{m: 1}}>
-                            <PersonIcon/>
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Sign in
+                        <Typography
+                            sx={{
+                                color: '#800019',
+                                mb: '15px',
+                                fontWeight: 500,
+                                fontSize: '27px',
+                                lineHeight: '38.51px'
+                            }}
+                        >
+                            Login to my account
                         </Typography>
-                        <Box component="form" noValidate onSubmit={handleLogin} sx={{mt: 1}} >
-                            {isLoginFailed && <Alert severity="error" sx={{mb: 2}}>電子郵件或密碼不正確。</Alert>}
+                        <Typography
+                            sx={{
+                                color: '#800019',
+                                mb: '15px',
+                                fontSize: '14px',
+                                lineHeight: '26.18px'
+                            }}
+                        >
+                            Enter your e-mail and password:
+                        </Typography>
+                        <Box component="form" noValidate onSubmit={handleLogin} sx={{mt: 1}}>
+                            {isLoginFailed && <Alert severity="error" sx={{mb: 2}}>Incorrect email or password.</Alert>}
                             <TextField
                                 margin="normal"
                                 required
                                 fullWidth
-                                label="Email Address"
+                                label="Email"
                                 variant="outlined"
                                 name="email"
                                 autoComplete="email"
@@ -142,9 +155,30 @@ export default function LoginPage() {
                                     onChange={handlePasswordChange}
                                 />
                             </FormControl>
-                            <Button type="submit" variant="contained" fullWidth sx={{height: 50, mt: 3}}>SIGN IN</Button>
+                            <Button type="submit" variant="contained" fullWidth  sx={{ height: 50, mt: 3, backgroundColor: "#800019", "&:hover": { backgroundColor: "#800019" } }}>Login</Button>
                             <Divider sx={{my: 3}}/>
                             <GoogleLoginButton style={{width: '100%', margin: 0}} onClick={handleGoogleSignIn}/>
+                            <Typography
+                                variant="body1"
+                                sx={{
+                                    fontWeight: 400,
+                                    lineHeight: "22.44px",
+                                    textAlign: "center",
+                                    color: "rgb(128, 0, 25)",
+                                    mt: 2,
+                                }}
+                            >
+                                New customer?
+                                <Link
+                                    to="/register"
+                                    style={{
+                                        marginLeft: 3,
+                                        color: 'rgb(128, 0, 25)',
+                                    }}
+                                >
+                                    Create your account
+                                </Link>
+                            </Typography>
                         </Box>
                     </Box>
                 </Grid>

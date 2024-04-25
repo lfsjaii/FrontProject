@@ -259,7 +259,8 @@ export default function NavList({search, setSearch}: Prop) {
                                 navigate("/login");
                             }
                         }}>
-                            <Badge badgeContent={3} color="error">
+                            <Badge color="error">
+                                {/*badgeContent={3}*/}
                                 <ShoppingCartOutlinedIcon/>
                             </Badge>
                         </IconButton>

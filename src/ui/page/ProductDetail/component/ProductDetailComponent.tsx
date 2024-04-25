@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import QuantitySelector from "../../../component/QuantitySelector.tsx";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {Button, CardMedia, TextField} from "@mui/material";
 import {ProductDetailDto} from "../../../../data/product/ProductDetailDto.ts";
 import * as CartItemApi from "../../../../api/CartItemApi.ts";
@@ -9,6 +9,8 @@ import AddToCartSuccessSnackbar from "./AddToCartSuccessSnackbar.tsx";
 import {useNavigate} from "react-router-dom";
 import Grid from "@mui/material/Unstable_Grid2";
 import Divider from "@mui/material/Divider";
+import {UserData} from "../../../../data/user/UserData.ts";
+import {LoginUserContext} from "../../../../context/LoginUserContext.ts";
 
 
 type Props = {
@@ -19,6 +21,7 @@ export default function ProductDetailComponent({dto}: Props) {
     const [quantity, setQuantity] = useState<number>(1);
     const [isAddingCart, setIsAddingCart] = useState<boolean>(false);
     const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+    const loginUser = useContext<UserData | null | undefined>(LoginUserContext);
 
     const navigator = useNavigate();
 
@@ -29,7 +32,9 @@ export default function ProductDetailComponent({dto}: Props) {
             setIsAddingCart(false);
             setSnackbarOpen(true);
         } catch (error) {
-            navigator("/error");
+            if(loginUser === null) {
+                navigator("/login")
+            }
         }
     };
 

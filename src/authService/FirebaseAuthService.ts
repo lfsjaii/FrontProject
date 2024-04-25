@@ -5,7 +5,8 @@ import {
     GoogleAuthProvider,
     onAuthStateChanged,
     signInWithEmailAndPassword,
-    signInWithPopup, signOut
+    signInWithPopup, signOut,
+    createUserWithEmailAndPassword,
 } from "firebase/auth";
 import {UserData} from "../data/user/UserData.ts";
 
@@ -25,6 +26,22 @@ export const handleSignInWithEmailAndPassword = async (email: string, password: 
         // Signed in
         return true;
     } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+// https://firebase.google.com/docs/auth/web/start#sign_up_new_users
+export const handleSignupWithEmailAndPassword = async (email: string, password: string): Promise<boolean> => {
+    try {
+        const auth = getAuth();
+        await createUserWithEmailAndPassword(auth,email,password);
+        //Signed up
+        return true;
+    } catch (error: any) {
+        if (error.code === 'auth/email-already-in-use') {
+            return false;
+        }
         console.log(error);
         return false;
     }

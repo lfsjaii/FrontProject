@@ -6,6 +6,7 @@ import Checkout from "../ui/page/Checkout";
 import ThankYou from "../ui/page/ThankYou";
 import ErrorPage from "../ui/page/ErrorPage";
 import ShoppingCart from "../ui/page/ShoppingCart";
+import SignupPage from "../ui/page/SignupPage";
 
 
 export const router = createBrowserRouter([
@@ -37,6 +38,11 @@ export const router = createBrowserRouter([
     {
         path: "/thankyou",
         element: <ThankYou/>,
+        errorElement : <ErrorPage/>
+    },
+    {
+        path: "/register",
+        element: <SignupPage/>,
         errorElement : <ErrorPage/>
     },
     {
