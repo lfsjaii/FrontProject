@@ -8,3 +8,4 @@ export default function getEnvConfig() {
         return ProdConfig;
     }
 }
+
