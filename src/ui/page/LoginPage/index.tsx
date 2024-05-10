@@ -59,6 +59,7 @@ export default function LoginPage() {
         }
     }
 
+
     useEffect(() => {
         if (loginUser) {
             navigate('/');
